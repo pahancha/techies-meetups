@@ -3,6 +3,8 @@ package com.techiesmeetups.web.repository;
 import com.techiesmeetups.web.models.Club;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ClubRepository extends JpaRepository<Club, Long> {
+import java.util.Optional;
 
+public interface ClubRepository extends JpaRepository<Club, Long> {
+    Optional<Club> findByTitle(String url);
 }
