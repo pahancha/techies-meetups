@@ -4,10 +4,12 @@ import com.techiesmeetups.web.dto.ClubDTO;
 import com.techiesmeetups.web.models.Club;
 import com.techiesmeetups.web.repository.ClubRepository;
 import com.techiesmeetups.web.service.ClubService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class ClubServiceImpl implements ClubService {
     private ClubRepository clubRepository;
     public ClubServiceImpl(ClubRepository clubRepository) {
