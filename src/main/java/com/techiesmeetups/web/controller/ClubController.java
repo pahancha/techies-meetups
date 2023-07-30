@@ -5,10 +5,11 @@ import com.techiesmeetups.web.service.ClubService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class ClubController {
     private ClubService clubService;
 
@@ -22,5 +23,11 @@ public class ClubController {
         List<ClubDTO> clubs = clubService.findAllClubs();
         model.addAttribute("clubs", clubs);
         return "clubs-list";
+    }
+
+//    REST api
+    @GetMapping("/api/clubs")
+    public List<ClubDTO> listClubs() {
+        return clubService.findAllClubs();
     }
 }
