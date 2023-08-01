@@ -1,11 +1,11 @@
 package com.techiesmeetups.web.controller;
 
 import com.techiesmeetups.web.dto.ClubDTO;
+import com.techiesmeetups.web.models.Club;
 import com.techiesmeetups.web.service.ClubService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +29,10 @@ public class ClubController {
     @GetMapping("/api/clubs")
     public List<ClubDTO> listClubs() {
         return clubService.findAllClubs();
+    }
+
+    @PostMapping("/api/clubs/new")
+    public void createClub(@RequestBody Club club){
+        clubService.create(club);
     }
 }
