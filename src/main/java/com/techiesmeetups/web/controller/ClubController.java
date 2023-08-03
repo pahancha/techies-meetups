@@ -18,12 +18,6 @@ public class ClubController {
         this.clubService = clubService;
     }
 
-    @GetMapping("/clubs")
-    public String listClubs(Model model) {
-        List<ClubDTO> clubs = clubService.findAllClubs();
-        model.addAttribute("clubs", clubs);
-        return "clubs-list";
-    }
 
 //    REST api
     @GetMapping("/api/clubs")
