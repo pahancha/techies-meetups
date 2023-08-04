@@ -40,5 +40,13 @@ public class ClubController {
         return new ResponseEntity<>(club, HttpStatus.OK);
     }
 
+    @PutMapping("/{clubID}")
+    public ResponseEntity<String> updateClub(@PathVariable("clubID") long clubID) {
+            clubService.updateClub(clubID);
+            return new ResponseEntity<>("Club updated successfully", HttpStatus.OK);
+    }
+
+
+
 
 }

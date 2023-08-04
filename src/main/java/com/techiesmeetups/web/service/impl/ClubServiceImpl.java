@@ -6,7 +6,9 @@ import com.techiesmeetups.web.repository.ClubRepository;
 import com.techiesmeetups.web.service.ClubService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,9 +34,28 @@ public class ClubServiceImpl implements ClubService {
         return mapToClubDto(club);
     }
 
+    @Override
+    public void updateClub(long clubID) {
+        Optional<Club> clubOptional = clubRepository.findById(clubID);
+        Club existingClub = clubOptional.get();
+        existingClub.setUpdatedOn(LocalDateTime.now());
+        // Update other fields as needed
+        clubRepository.save(existingClub);
 
+    }
 
+    private Club mapToClub(ClubDTO club) {
+        Club clubDto = Club.builder()
+                .id(club.getId())
+                .title(club.getTitle())
+                .photoURL(club.getPhotoURL())
+                .content(club.getContent())
+                .createdOn(club.getCreatedOn())
+                .updatedOn(club.getCreatedOn())
+                .build();
 
+        return clubDto;
+    }
 
 
     private ClubDTO mapToClubDto(Club club) {
