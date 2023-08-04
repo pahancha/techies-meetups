@@ -35,14 +35,11 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
-    public void updateClub(long clubID) {
-        Optional<Club> clubOptional = clubRepository.findById(clubID);
-        Club existingClub = clubOptional.get();
-        existingClub.setUpdatedOn(LocalDateTime.now());
-        // Update other fields as needed
-        clubRepository.save(existingClub);
-
+    public void updateClub(ClubDTO clubDTO) {
+        Club club = mapToClub(clubDTO);
+        clubRepository.save(club);
     }
+
 
     private Club mapToClub(ClubDTO club) {
         Club clubDto = Club.builder()

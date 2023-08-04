@@ -41,10 +41,34 @@ public class ClubController {
     }
 
     @PutMapping("/{clubID}")
-    public ResponseEntity<String> updateClub(@PathVariable("clubID") long clubID) {
-            clubService.updateClub(clubID);
+    public ResponseEntity<String> updateClub(@PathVariable("clubID") Long clubID, @RequestBody ClubDTO club) {
+        if (!clubID.equals(club.getId())) {
+            return new ResponseEntity<>("Club ID mismatch", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            clubService.updateClub(club);
             return new ResponseEntity<>("Club updated successfully", HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>("Club not found", HttpStatus.NOT_FOUND);
+        }
     }
+
+//    @PostMapping("/{clubID}/edit")
+//    public ResponseEntity<String> updateClub(@PathVariable("clubID") Long clubID, @RequestBody ClubDTO club) {
+//        if (!clubID.equals(club.getId())) {
+//            return new ResponseEntity<>("Club ID mismatch", HttpStatus.BAD_REQUEST);
+//        }
+//
+//        try {
+//            clubService.updateClub(club);
+//            return new ResponseEntity<>("Club updated successfully", HttpStatus.OK);
+//        } catch (RuntimeException e) {
+//            return new ResponseEntity<>("Club not found", HttpStatus.NOT_FOUND);
+//        }
+//    }
+
+
 
 
 
