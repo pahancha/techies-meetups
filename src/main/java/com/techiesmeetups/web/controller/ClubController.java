@@ -3,30 +3,42 @@ package com.techiesmeetups.web.controller;
 import com.techiesmeetups.web.dto.ClubDTO;
 import com.techiesmeetups.web.models.Club;
 import com.techiesmeetups.web.service.ClubService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/clubs")
 public class ClubController {
-    private ClubService clubService;
 
+    private final ClubService clubService;
 
     public ClubController(ClubService clubService) {
         this.clubService = clubService;
     }
 
-
-//    REST api
-    @GetMapping("/api/clubs")
-    public List<ClubDTO> listClubs() {
-        return clubService.findAllClubs();
+    @GetMapping
+    public ResponseEntity<List<ClubDTO>> listClubs() {
+        List<ClubDTO> clubs = clubService.findAllClubs();
+        return new ResponseEntity<>(clubs, HttpStatus.OK);
     }
 
-    @PostMapping("/api/clubs/new")
-    public void createClub(@RequestBody Club club){
+    @PostMapping("/new")
+    public ResponseEntity<String> createClub(@RequestBody Club club) {
         clubService.create(club);
+        return new ResponseEntity<>("Club created successfully", HttpStatus.CREATED);
     }
+
+    @GetMapping("/{clubID}")
+    public ResponseEntity<ClubDTO> getClub(@PathVariable("clubID") long clubID) {
+        ClubDTO club = clubService.findMeetByID(clubID);
+        if (club == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(club, HttpStatus.OK);
+    }
+
+
 }

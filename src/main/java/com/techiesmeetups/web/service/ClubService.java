@@ -9,4 +9,7 @@ public interface ClubService {
     List<ClubDTO> findAllClubs();
     Club create(Club club);
 
+    ClubDTO findMeetByID(long meetID);
+
+
 }
