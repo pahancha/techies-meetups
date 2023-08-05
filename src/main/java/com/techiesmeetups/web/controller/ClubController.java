@@ -3,11 +3,15 @@ package com.techiesmeetups.web.controller;
 import com.techiesmeetups.web.dto.ClubDTO;
 import com.techiesmeetups.web.models.Club;
 import com.techiesmeetups.web.service.ClubService;
+import jakarta.validation.Valid;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/clubs")
@@ -41,7 +45,20 @@ public class ClubController {
     }
 
     @PutMapping("/{clubID}")
-    public ResponseEntity<String> updateClub(@PathVariable("clubID") Long clubID, @RequestBody ClubDTO club) {
+    public ResponseEntity<String> updateClub(@PathVariable("clubID") Long clubID,
+                                             @Valid @RequestBody ClubDTO club,
+                                             BindingResult result) {
+        if (result.hasErrors()) {
+            // Construct a list of validation error messages
+            List<String> errors = result.getAllErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+
+            // Return the validation error messages with BAD_REQUEST status
+            return new ResponseEntity<>(errors.toString(), HttpStatus.BAD_REQUEST);
+        }
+
         if (!clubID.equals(club.getId())) {
             return new ResponseEntity<>("Club ID mismatch", HttpStatus.BAD_REQUEST);
         }
