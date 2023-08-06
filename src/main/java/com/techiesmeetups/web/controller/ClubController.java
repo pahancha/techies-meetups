@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -93,6 +94,13 @@ public class ClubController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>("Club not found", HttpStatus.NOT_FOUND);
         }
+    }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ClubDTO>> searchClub(@RequestParam(value = "query") String query) {
+        List<ClubDTO> clubs = clubService.searchClubs(query);
+        return ResponseEntity.ok(clubs);
     }
 
 
