@@ -1,6 +1,7 @@
 package com.techiesmeetups.web.dto;
 
 
+import com.techiesmeetups.web.models.Club;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,4 +24,5 @@ public class EventDTO {
     private String photoURL;
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
+//    private Club club;
 }
