@@ -1,5 +1,6 @@
 package com.techiesmeetups.web.controller;
 
+import com.techiesmeetups.web.dto.ClubDTO;
 import com.techiesmeetups.web.dto.EventDTO;
 import com.techiesmeetups.web.models.Event;
 import com.techiesmeetups.web.service.EventService;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 //@RequestMapping("/api/events")
@@ -28,6 +31,12 @@ public class EventController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>("Failed to create event", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("api/events")
+    public ResponseEntity<List<EventDTO>> eventsList(){
+        List<EventDTO> events = eventService.getAllEvents();
+        return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
 

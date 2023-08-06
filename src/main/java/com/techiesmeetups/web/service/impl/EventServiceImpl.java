@@ -9,7 +9,11 @@ import com.techiesmeetups.web.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.techiesmeetups.web.mapper.EventMapper.mapToEvent;
+import static com.techiesmeetups.web.mapper.EventMapper.mapToEventDTO;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -28,5 +32,11 @@ public class EventServiceImpl implements EventService {
         Event event = mapToEvent(eventDTO);
         event.setClub(club);
         eventRepository.save(event);
+    }
+
+    @Override
+    public List<EventDTO> getAllEvents() {
+        List<Event> events = eventRepository.findAll();
+        return events.stream().map(event -> mapToEventDTO(event)).collect(Collectors.toList());
     }
 }
