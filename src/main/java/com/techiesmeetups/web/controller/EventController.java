@@ -39,6 +39,17 @@ public class EventController {
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
+    @GetMapping("/api/events/{eventId}")
+    public ResponseEntity<EventDTO> viewEvent(@PathVariable("eventId") Long eventId) {
+        try {
+            EventDTO event = eventService.findByEventId(eventId);
+            return new ResponseEntity<>(event, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 
 
 }
