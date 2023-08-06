@@ -85,6 +85,15 @@ public class ClubController {
 //        }
 //    }
 
+    @DeleteMapping("/{clubID}")
+    public ResponseEntity<String> deleteClub(@PathVariable("clubID") Long clubID) {
+        try {
+            clubService.deleteClub(clubID);
+            return new ResponseEntity<>("Club deleted successfully", HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>("Club not found", HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 
