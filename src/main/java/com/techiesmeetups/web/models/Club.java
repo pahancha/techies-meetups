@@ -1,14 +1,20 @@
 package com.techiesmeetups.web.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "clubs")
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Club {
     @Id
@@ -24,17 +30,9 @@ public class Club {
     @UpdateTimestamp
     private LocalDateTime updatedOn;
 
-    public Club() {
-    }
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+    private Set<Event> events = new HashSet<>();
 
-    public Club(Long id, String title, String photoURL, String content, LocalDateTime createdOn, LocalDateTime updatedOn) {
-        this.id = id;
-        this.title = title;
-        this.photoURL = photoURL;
-        this.content = content;
-        this.createdOn = createdOn;
-        this.updatedOn = updatedOn;
-    }
 
     // Getters and Setters
     public Long getId() {
