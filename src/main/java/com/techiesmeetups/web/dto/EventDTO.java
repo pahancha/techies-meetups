@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class EventDTO {
     private long id;
+    private String name;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String type;
