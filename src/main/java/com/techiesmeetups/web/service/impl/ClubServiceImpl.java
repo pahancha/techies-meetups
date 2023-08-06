@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.techiesmeetups.web.mapper.ClubMapper.mapToClub;
+import static com.techiesmeetups.web.mapper.ClubMapper.mapToClubDto;
+
 @Service
 public class ClubServiceImpl implements ClubService {
     private ClubRepository clubRepository;
@@ -52,30 +55,5 @@ public class ClubServiceImpl implements ClubService {
     }
 
 
-    private Club mapToClub(ClubDTO club) {
-        Club clubDto = Club.builder()
-                .id(club.getId())
-                .title(club.getTitle())
-                .photoURL(club.getPhotoURL())
-                .content(club.getContent())
-                .createdOn(club.getCreatedOn())
-                .updatedOn(club.getCreatedOn())
-                .build();
 
-        return clubDto;
-    }
-
-
-    private ClubDTO mapToClubDto(Club club) {
-        ClubDTO clubDTO = ClubDTO.builder()
-                .id(club.getId())
-                .title(club.getTitle())
-                .photoURL(club.getPhotoURL())
-                .content(club.getContent())
-                .createdOn(club.getCreatedOn())
-                .updatedOn(club.getUpdatedOn())
-                .build();
-
-        return clubDTO;
-    }
 }

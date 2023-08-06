@@ -9,6 +9,8 @@ import com.techiesmeetups.web.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.techiesmeetups.web.mapper.EventMapper.mapToEvent;
+
 @Service
 public class EventServiceImpl implements EventService {
     private ClubRepository clubRepository;
@@ -26,18 +28,5 @@ public class EventServiceImpl implements EventService {
         Event event = mapToEvent(eventDTO);
         event.setClub(club);
         eventRepository.save(event);
-    }
-
-    private Event mapToEvent(EventDTO eventDTO) {
-        return Event.builder()
-                .id(eventDTO.getId())
-                .name(eventDTO.getName())
-                .type(eventDTO.getType())
-                .startTime(eventDTO.getStartTime())
-                .endTime(eventDTO.getEndTime())
-                .createdOn(eventDTO.getCreatedOn())
-                .updatedOn(eventDTO.getUpdatedOn())
-                .photoURL(eventDTO.getPhotoURL())
-                .build();
     }
 }
