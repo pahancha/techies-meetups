@@ -7,6 +7,7 @@ import com.techiesmeetups.web.models.Event;
 import com.techiesmeetups.web.repository.ClubRepository;
 import com.techiesmeetups.web.repository.EventRepository;
 import com.techiesmeetups.web.service.EventService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,10 +49,26 @@ public class EventServiceImpl implements EventService {
         return  mapToEventDTO(event);
     }
 
-    @Override
-    public void updateEvent(EventDTO eventDTO) {
-        Event event = mapToEvent(eventDTO);
-        eventRepository.save(event);
-    }
+//    @Override
+//    public void updateEvent(EventDTO eventDTO) {
+//        Event event = mapToEvent(eventDTO);
+//        eventRepository.save(event);
+//    }
 
+    public void updateEvent(Long eventId, EventDTO updatedEventDTO) {
+        Event existingEvent = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EntityNotFoundException("Event not found"));
+
+        // Map properties from updatedEventDTO to existingEvent
+        existingEvent.setName(updatedEventDTO.getName());
+        existingEvent.setType(updatedEventDTO.getType());
+        existingEvent.setStartTime(updatedEventDTO.getStartTime());
+        existingEvent.setEndTime(updatedEventDTO.getEndTime());
+        existingEvent.setPhotoURL(updatedEventDTO.getPhotoURL());
+
+        // You don't need to update the club reference here since it's not changing
+
+        // Save the updated event
+        eventRepository.save(existingEvent);
+    }
 }

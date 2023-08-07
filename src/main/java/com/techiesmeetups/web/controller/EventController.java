@@ -4,6 +4,7 @@ import com.techiesmeetups.web.dto.ClubDTO;
 import com.techiesmeetups.web.dto.EventDTO;
 import com.techiesmeetups.web.models.Event;
 import com.techiesmeetups.web.service.EventService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -52,35 +53,34 @@ public class EventController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @PutMapping("/api/events/{eventId}")
+    public ResponseEntity<String> updateEvent(
+            @PathVariable("eventId") Long eventId,
+            @Valid @RequestBody EventDTO updatedEventDTO,
+            BindingResult result) {
 
-//    @PutMapping("api/events/{eventId}")
-//    public ResponseEntity<String> updateEvent(@PathVariable("eventId") Long eventId,
-//                                              @Valid @RequestBody EventDTO event,
-//                                              BindingResult result) {
-//        if (result.hasErrors()) {
-//            // Construct a list of validation error messages
-//            List<String> errors = result.getAllErrors()
-//                    .stream()
-//                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-//                    .collect(Collectors.toList());
-//
-//            // Return the validation error messages with BAD_REQUEST status
-//            return new ResponseEntity<>(errors.toString(), HttpStatus.BAD_REQUEST);
-//        }
-//
-//        if (!eventId.equals(event.getId())) {
-//            return new ResponseEntity<>("Event ID mismatch", HttpStatus.BAD_REQUEST);
-//        }
-//
-//        try {
-//            EventDTO existingEvent = eventService.findByEventId(eventId);
-//            event.setClub(existingEvent.getClub());
-//            eventService.updateEvent(event);
-//            return new ResponseEntity<>("Event updated successfully", HttpStatus.OK);
-//        } catch (RuntimeException e) {
-//            return new ResponseEntity<>("Event not found", HttpStatus.NOT_FOUND);
-//        }
-//    }
+        if (result.hasErrors()) {
+            // Construct a list of validation error messages
+            List<String> errors = result.getAllErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+
+            // Return the validation error messages with BAD_REQUEST status
+            return new ResponseEntity<>(errors.toString(), HttpStatus.BAD_REQUEST);
+        }
+
+        if (!eventId.equals(updatedEventDTO.getId())) {
+            return new ResponseEntity<>("Event ID mismatch", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            eventService.updateEvent(eventId, updatedEventDTO);
+            return new ResponseEntity<>("Event updated successfully", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("Event not found", HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 
