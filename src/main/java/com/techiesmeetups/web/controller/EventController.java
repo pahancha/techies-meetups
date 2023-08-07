@@ -82,6 +82,15 @@ public class EventController {
         }
     }
 
+    @DeleteMapping("/api/events/{eventId}")
+    public ResponseEntity<String> deleteEvent(@PathVariable("eventId") long eventId) {
+        try {
+            eventService.deleteEvent(eventId);
+            return new ResponseEntity<>("Event deleted successfully", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("Event not found", HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 
