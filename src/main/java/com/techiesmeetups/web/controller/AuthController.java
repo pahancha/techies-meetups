@@ -1,11 +1,13 @@
 package com.techiesmeetups.web.controller;
 
 import com.techiesmeetups.web.dto.LoginRequestDTO;
+import com.techiesmeetups.web.dto.LoginResponseDTO;
 import com.techiesmeetups.web.dto.RegistrationDTO;
 import com.techiesmeetups.web.models.UserEntity;
-import com.techiesmeetups.web.security.CustomUserDetailsService;
+import com.techiesmeetups.web.service.AuthService;
 import com.techiesmeetups.web.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +25,11 @@ import java.util.stream.Collectors;
 
 @RestController
 public class AuthController {
+    @Autowired
     private UserService userService;
 
-    CustomUserDetailsService customUserDetailsService;
-
+    @Autowired
+    AuthService authService;
     public AuthController(UserService userService) {
         this.userService = userService;
     }
@@ -57,37 +60,8 @@ public class AuthController {
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
-//    @PostMapping("/api/login")
-//    public ResponseEntity<String> login(@RequestBody LoginRequestDTO loginRequest) {
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        loginRequest.getUserName(),
-//                        loginRequest.getPassword()
-//                )
-//        );
-//
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        return ResponseEntity.ok("User logged in successfully");
-//    }
-
-//    @PostMapping("/api/login")
-//    public ResponseEntity<String> login(@RequestParam String userName,
-//                                        @RequestParam String password) {
-//        try {
-//            Authentication authentication = authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(userName, password)
-//            );
-//
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//            return ResponseEntity.ok("User logged in successfully");
-//        } catch (AuthenticationException e) {
-//            return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
-//        }
-//    }
-
-
-
-
-
+    @PostMapping("/api/login")
+    public LoginResponseDTO loginUser(@RequestBody LoginRequestDTO loginRequestDTO) {
+        return authService.loginUser(loginRequestDTO);
+    }
 }

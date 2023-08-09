@@ -6,9 +6,7 @@ import com.techiesmeetups.web.repository.ClubRepository;
 import com.techiesmeetups.web.service.ClubService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.techiesmeetups.web.mapper.ClubMapper.mapToClub;
