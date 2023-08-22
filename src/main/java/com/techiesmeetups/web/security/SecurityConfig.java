@@ -15,6 +15,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
@@ -26,6 +27,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 
 @Configuration
@@ -58,7 +60,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(CustomUserDetailsService userDetailsService) {
         DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
         daoProvider.setUserDetailsService(userDetailsService);
-        daoProvider.setPasswordEncoder(passwordEncoder()); // Set the password encoder here
+        daoProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(daoProvider);
     }
 
@@ -66,6 +68,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests( auth -> {
                     auth.requestMatchers(HttpMethod.GET,"/api/clubs", "/api/events","/api/events/{eventId}")
@@ -89,6 +92,10 @@ public class SecurityConfig {
         return http.build();
     }
 
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        return new CustomCors
+//    }
 
 
     // ongoing validation via Oauth2
