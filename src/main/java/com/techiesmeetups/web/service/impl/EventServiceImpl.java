@@ -66,7 +66,6 @@ public class EventServiceImpl implements EventService {
         existingEvent.setEndTime(updatedEventDTO.getEndTime());
         existingEvent.setPhotoURL(updatedEventDTO.getPhotoURL());
 
-        // You don't need to update the club reference here since it's not changing
 
         // Save the updated event
         eventRepository.save(existingEvent);

@@ -26,4 +26,6 @@ public class EventDTO {
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
     private Club club;
+    private Long clubId;
+    private String clubName;
 }

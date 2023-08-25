@@ -30,6 +30,8 @@ public class EventMapper {
                 .updatedOn(event.getUpdatedOn())
                 .photoURL(event.getPhotoURL())
 //                .club(event.getClub())
+                .clubId(event.getClub().getId())
+                .clubName(event.getClub().getTitle())
                 .build();
     }
 }
