@@ -14,4 +14,5 @@ public interface EventService {
     void updateEvent(Long eventId,EventDTO eventDTO);
 
     void deleteEvent(long eventId);
+     int getNumberOfEvents();
 }

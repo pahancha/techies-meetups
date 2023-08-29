@@ -33,6 +33,7 @@ public class TokenServiceImpl implements TokenService {
                 .issuer("self")
                 .issuedAt(now)
                 .subject(authentication.getName())
+                .claim("roles",scope)
                 .build();
 
         String jwt = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();

@@ -16,4 +16,6 @@ public interface ClubService {
     void deleteClub(Long clubID);
 
     List<ClubDTO> searchClubs(String query);
+
+    int getNumberOfClubs();
 }
