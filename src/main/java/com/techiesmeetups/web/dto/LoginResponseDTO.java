@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class LoginResponseDTO {
     private String user;
     private String jwt;
-
+    private String role;
 }

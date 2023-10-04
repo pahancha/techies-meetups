@@ -1,5 +1,6 @@
 package com.techiesmeetups.web.dto;
 
+import com.techiesmeetups.web.models.UserEntity;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +22,6 @@ public class ClubDTO {
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
     private List<EventDTO> events;
+//    private UserEntity createdBy;
+    private String createdBy;
 }

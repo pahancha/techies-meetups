@@ -72,16 +72,16 @@ public class SecurityConfig {
         http
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests( auth -> {
-//                    auth.requestMatchers(HttpMethod.GET,"/api/clubs", "/api/events","/api/events/{eventId}","/api/clubs/{clubId}")
-//                            .permitAll();
-////                    auth.requestMatchers(HttpMethod.GET,"/api/clubs/{clubId}")
-////                            .authenticated();
-//                    auth.requestMatchers(HttpMethod.PUT,"/clubs/{clubId}")
-//                            .authenticated();
-//                    auth.requestMatchers(HttpMethod.POST,"/api/login","/api/register","/clubs/{clubId}")
-//                            .permitAll();
-//                })
+                .authorizeHttpRequests( auth -> {
+                    auth.requestMatchers(HttpMethod.GET,"/api/clubs", "/api/events","/api/events/{eventId}","/api/clubs/{clubId}")
+                            .permitAll();
+                    auth.requestMatchers(HttpMethod.GET,"/api/admin/info")
+                                    .hasRole("ADMIN");
+                    auth.requestMatchers(HttpMethod.PUT,"/clubs/{clubId}")
+                            .authenticated();
+                    auth.requestMatchers(HttpMethod.POST,"/api/login","/api/register","/clubs/{clubId}")
+                            .permitAll();
+                })
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
 //                .formLogin((form -> form.disable()))
 //                .httpBasic(Customizer.withDefaults())

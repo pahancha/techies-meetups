@@ -42,10 +42,12 @@ public class AuthServiceImpl implements AuthService {
             );
             String token = tokenService.generateJwt(authentication);
 
-            return new  LoginResponseDTO(userDetailsService.loadUserByUsername(loginRequestDTO.getUserName()).getUsername(),token);
+            return new  LoginResponseDTO(userDetailsService.loadUserByUsername(loginRequestDTO.getUserName()).getUsername(),
+                    token,
+                    userDetailsService.loadUserByUsername(loginRequestDTO.getUserName()).getAuthorities().toString());
 
         } catch (AuthenticationException e) {
-            return new LoginResponseDTO(null, "");
+            return new LoginResponseDTO(null, null,"NOT REGISTERED");
         }
     }
 

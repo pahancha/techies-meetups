@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +33,8 @@ public class ClubController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<String> createClub(@RequestBody Club club) {
-        clubService.create(club);
+    public ResponseEntity<String> createClub(@RequestBody ClubDTO clubDTO) {
+        clubService.create(clubDTO);
         return new ResponseEntity<>("Club created successfully", HttpStatus.CREATED);
     }
 

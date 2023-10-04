@@ -37,6 +37,10 @@ public class Club {
     @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<Event> events = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "created_by", nullable = false)
+    private UserEntity createdBy;
+
 
     // toString() method
     @Override

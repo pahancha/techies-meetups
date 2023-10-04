@@ -2,8 +2,12 @@ package com.techiesmeetups.web.service.impl;
 
 import com.techiesmeetups.web.dto.ClubDTO;
 import com.techiesmeetups.web.models.Club;
+import com.techiesmeetups.web.models.UserEntity;
 import com.techiesmeetups.web.repository.ClubRepository;
+import com.techiesmeetups.web.repository.UserRepository;
+import com.techiesmeetups.web.security.SecurityUtil;
 import com.techiesmeetups.web.service.ClubService;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +19,10 @@ import static com.techiesmeetups.web.mapper.ClubMapper.mapToClubDto;
 @Service
 public class ClubServiceImpl implements ClubService {
     private ClubRepository clubRepository;
-    public ClubServiceImpl(ClubRepository clubRepository) {
+    private UserRepository userRepository;
+    public ClubServiceImpl(ClubRepository clubRepository, UserRepository userRepository) {
         this.clubRepository  = clubRepository;
+        this.userRepository = userRepository;
     }
     @Override
     public List<ClubDTO> findAllClubs() {
@@ -26,7 +32,11 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
-    public Club create(Club club) {
+    public Club create(ClubDTO clubDTO) {
+        String username = clubDTO.getCreatedBy();
+        UserEntity user = userRepository.findFirstByUserName(username);
+        Club club = mapToClub(clubDTO);
+        club.setCreatedBy(user);
         return clubRepository.save(club);
     }
 
@@ -38,7 +48,11 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public void updateClub(ClubDTO clubDTO) {
+        String username = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByUserName(username);
+
         Club club = mapToClub(clubDTO);
+        club.setCreatedBy(user);
         clubRepository.save(club);
     }
 
