@@ -5,9 +5,7 @@ import com.techiesmeetups.web.models.Club;
 import com.techiesmeetups.web.models.UserEntity;
 import com.techiesmeetups.web.repository.ClubRepository;
 import com.techiesmeetups.web.repository.UserRepository;
-import com.techiesmeetups.web.security.SecurityUtil;
 import com.techiesmeetups.web.service.ClubService;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +46,7 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public void updateClub(ClubDTO clubDTO) {
-        String username = SecurityUtil.getSessionUser();
+        String username = clubDTO.getCreatedBy();
         UserEntity user = userRepository.findByUserName(username);
 
         Club club = mapToClub(clubDTO);
