@@ -1,6 +1,7 @@
 package com.techiesmeetups.web.repository;
 
 import com.techiesmeetups.web.models.Club;
+import com.techiesmeetups.web.models.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,4 +14,5 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
     @Query("SELECT c FROM Club c WHERE LOWER(c.title) LIKE LOWER(CONCAT('%', :query, '%')) OR c.title LIKE CONCAT('%', :query, '%')")
     List<Club> searchClubs(String query);
 
+    List<Club> findByCreatedBy(UserEntity createdBy);
 }

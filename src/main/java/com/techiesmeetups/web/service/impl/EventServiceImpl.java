@@ -1,6 +1,5 @@
 package com.techiesmeetups.web.service.impl;
 
-import com.techiesmeetups.web.dto.ClubDTO;
 import com.techiesmeetups.web.dto.EventDTO;
 import com.techiesmeetups.web.models.Club;
 import com.techiesmeetups.web.models.Event;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.techiesmeetups.web.mapper.ClubMapper.mapToClub;
 import static com.techiesmeetups.web.mapper.EventMapper.mapToEvent;
 import static com.techiesmeetups.web.mapper.EventMapper.mapToEventDTO;
 
@@ -49,11 +47,6 @@ public class EventServiceImpl implements EventService {
         return  mapToEventDTO(event);
     }
 
-//    @Override
-//    public void updateEvent(EventDTO eventDTO) {
-//        Event event = mapToEvent(eventDTO);
-//        eventRepository.save(event);
-//    }
 
     public void updateEvent(Long eventId, EventDTO updatedEventDTO) {
         Event existingEvent = eventRepository.findById(eventId)

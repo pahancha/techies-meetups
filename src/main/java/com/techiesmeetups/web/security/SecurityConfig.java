@@ -77,6 +77,11 @@ public class SecurityConfig {
                             .permitAll();
                     auth.requestMatchers(HttpMethod.GET,"/api/admin/info")
                                     .hasRole("ADMIN");
+//                    auth.requestMatchers(HttpMethod.GET,"/api/user/info")
+//                            .hasRole("USER");
+                    auth.requestMatchers(HttpMethod.GET,"/api/user/info")
+                            .permitAll();
+
                     auth.requestMatchers(HttpMethod.PUT,"/clubs/{clubId}")
                             .authenticated();
                     auth.requestMatchers(HttpMethod.POST,"/api/login","/api/register","/clubs/{clubId}")

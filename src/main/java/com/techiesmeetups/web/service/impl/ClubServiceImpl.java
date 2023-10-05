@@ -69,5 +69,4 @@ public class ClubServiceImpl implements ClubService {
         return clubRepository.findAll().size();
     }
 
-
 }
