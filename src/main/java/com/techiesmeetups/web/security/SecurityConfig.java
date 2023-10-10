@@ -80,7 +80,7 @@ public class SecurityConfig {
 //                    auth.requestMatchers(HttpMethod.GET,"/api/user/info")
 //                            .hasRole("USER");
                     auth.requestMatchers(HttpMethod.GET,"/api/user/info")
-                            .permitAll();
+                            .authenticated();
 
                     auth.requestMatchers(HttpMethod.PUT,"/clubs/{clubId}")
                             .authenticated();
