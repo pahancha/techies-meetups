@@ -6,7 +6,6 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.techiesmeetups.web.service.UserService;
 import com.techiesmeetups.web.utils.RSAKeyProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,14 +28,11 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfigurationSource;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-//    private UserService userDetailsService;
-
     private CustomUserDetailsService userDetailsService;
 
     private final RSAKeyProperties keys;
@@ -51,12 +47,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public AuthenticationManager authenticationManager(CustomUserDetailsService userDetailsService) {
-//        DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
-//        daoProvider.setUserDetailsService(userDetailsService);
-//        return new ProviderManager(daoProvider);
-//    }
 
     @Bean
     public AuthenticationManager authenticationManager(CustomUserDetailsService userDetailsService) {
@@ -73,26 +63,37 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests( auth -> {
+
+                    //GET: clubs list, meetups(events) list, individual club and meetup information -> PUBLIC
                     auth.requestMatchers(HttpMethod.GET,"/api/clubs", "/api/events","/api/events/{eventId}","/api/clubs/{clubId}")
                             .permitAll();
+
+                    //POST: logging and registering -> PUBLIC
+                    auth.requestMatchers(HttpMethod.POST,"/api/login","/api/register")
+                            .permitAll();
+
+                    //GET: admin information -> ADMIN only
                     auth.requestMatchers(HttpMethod.GET,"/api/admin/info")
                                     .hasRole("ADMIN");
-//                    auth.requestMatchers(HttpMethod.GET,"/api/user/info")
-//                            .hasRole("USER");
-                    auth.requestMatchers(HttpMethod.GET,"/api/user/info")
+
+                    //GET: user information -> USER only
+                    auth.requestMatchers(HttpMethod.GET,"/api/user/info/{userID}")
+                            .hasRole("USER");
+
+                    //PUT: updating club information and meetup (event) -> USER only
+                    auth.requestMatchers(HttpMethod.PUT,"api/clubs/{clubId}","api/events/{eventID}")
+                            .hasRole("USER");
+
+                    //POST: create new club; create new meetup (event) -> USER only
+                    auth.requestMatchers(HttpMethod.POST,"api/clubs/new","api/{clubID}/events")
+                                    .hasRole("USER");
+
+                    // DELETE: delete club and meetup (events) -> USER and ADMIN
+                    auth.requestMatchers(HttpMethod.DELETE,"api/events/{eventID}","api/clubs/{clubID}")
                             .authenticated();
 
-                    auth.requestMatchers(HttpMethod.PUT,"/clubs/{clubId}")
-                            .authenticated();
-                    auth.requestMatchers(HttpMethod.POST,"/api/login","/api/register","/clubs/{clubId}")
-                            .permitAll();
                 })
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-//                .formLogin((form -> form.disable()))
-//                .httpBasic(Customizer.withDefaults())
-
-//                .logout(logout -> logout.disable());
-
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -100,13 +101,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//        return new CustomCors
-//    }
-
-
-    // ongoing validation via Oauth2
 
     @Bean
     public JwtDecoder jwtDecoder(){
